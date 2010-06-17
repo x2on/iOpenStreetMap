@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="yes" name="apple-mobile-web-app-capable" />
+<meta content="index,follow" name="robots" />
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<link href="pics/homescreen.gif" rel="apple-touch-icon" />
+<meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
+<link href="css/style.css" rel="stylesheet" media="screen" type="text/css" />
+<link href="css/lightbox.css" rel="stylesheet" media="screen" type="text/css" />
+<script type="text/javascript" src="js/khtml.js"> </script>
+<script type="text/javascript" src="js/ibox.js"></script>
+
+<script type="text/javascript">
+iBox.close_label = 'X';
+function init(mapMode){
+	map=new kmap(document.getElementById("map"));
+	map.setMapType('0');
+	var center=new kPoint(48.2,15.633);
+	map.setCenter(center,9);
+}
+function geoloc(){
+	//	document.getElementById("geolocationajaxload").style.display="";
+	try{
+		var geo=navigator.geolocation;
+		if(!geo){
+			var geo = google.gears.factory.create('beta.geolocation');
+		}
+		geo.getCurrentPosition(callback,error);
+	}catch(e){
+		alert(e);
+	}
+}
+function callback(position) {
+	var center=new kPoint(position.coords.latitude, position.coords.longitude);
+	map.setCenter(center,16);
+}
+function error(error){
+	alert(error);
+}
+function search(){
+	var target=document.getElementById("searchresults");
+	while(target.firstChild){target.removeChild(target.firstChild)};
+	document.getElementById("searchresults").appendChild(document.createTextNode("searching..."));
+
+	var xmlHttp=new XMLHttpRequest();
+	if (xmlHttp) {
+		var place=document.getElementById('search').value;
+		if(place=="")return;
+		xmlHttp.open('GET', 'http://nominatim.openstreetmap.org/search?format=xml&accept-language=de-De,de;q=0.5&q='+place, true);
+		xmlHttp.onreadystatechange = function () {
+			if (xmlHttp.readyState == 4) {
+				render(xmlHttp.responseXML);
+				return;	
+			}
+		};
+		xmlHttp.send(null);
+	}else{
+		alert("Sorry, your browser does not support this.");
+	}
+}
+function render(dom){
+	//alert('Test1');
+	var target=document.getElementById("searchresults");
+	while(target.firstChild){target.removeChild(target.firstChild)};
+	var names=dom.getElementsByTagName("place");
+	if(names.length==0){
+		var nameDiv=document.createElement("div");
+		textNode=document.createTextNode("Leider kein passender Ort gefunden");
+		nameDiv.appendChild(textNode);
+		target.appendChild(nameDiv);
+		iBox.show(document.getElementById("searchresults").innerHTML,'Kein Ort gefunden');
+		return;
+	}
+	for(var i=0; i < names.length;i++){
+		var name=names.item(i);
+		if(name.nodeType==1){
+			try{
+				var nameText=name.getAttribute("display_name");
+			}catch(e){
+				var nameText="no";
+			}
+			countryName="nix";
+			var lat=name.getAttribute("lat");
+			var lng=name.getAttribute("lon");
+			var div=document.createElement("div");
+			var a=document.createElement("a");
+			a.appendChild(div);
+			div.style.fontSize="12px";
+			div.style.marginBottom="2px";
+			//var a=document.createElement("a");
+			var nameDiv=document.createElement("div");
+			var countryNameDiv=document.createElement("div");
+			var nameTextNode=document.createTextNode(nameText);
+			var countryNameTextNode=document.createTextNode(" in "+countryName);
+			nameDiv.appendChild(nameTextNode);
+			countryNameDiv.appendChild(countryNameTextNode);
+			div.appendChild(nameDiv);
+			var zoom=14;
+			var value="map.setCenter(new kPoint("+lat+","+lng+"),"+zoom+");";
+			a.setAttribute("href","javascript:executeSearch('"+value+"')");
+			target.appendChild(a);
+			div.className="item";
+			nameDiv.className="itemname";
+			countryNameDiv.className="itemcountry";
+		}
+	}
+	//Remove Focus from Search-Field to hide Keyboard
+	document.getElementById("search").blur();
+	iBox.show(document.getElementById("searchresults").innerHTML,'Bitte wählen Sie einen Ort aus.');
+	return;		
+	var a=document.createElement("a");
+	var br=document.createElement("br");
+	var cc=document.createTextNode("cc by geonames");
+	a.appendChild(cc);
+	a.setAttribute("href","http://www.geonames.org");
+	return;
+	target.appendChild(br);
+	target.appendChild(a);
+}
+function executeSearch(value) {
+	eval(value);
+	iBox.hide();
+}
+function changeMapType(value) {
+	//0 = Mapnik, 1 = Cycle
+	map.setMapType(value);
+	if(value == '1') {
+		document.getElementById("pressed").id = "";
+		document.getElementById("fahrrad").id = "pressed";
+	}
+	/*
+	switch (value) {
+	  case "0":
+	    document.getElementById("0").id = "pressed";
+		document.getElementById("pressed").id = "pressed";
+	    break;
+	  case "1":
+	    document.getElementById("1").id = "pressed";
+	    break;
+	  case "2":
+	     document.getElementById("2").id = "pressed";
+	    break;
+	}
+	
+	*/
+}
+</script>
+<script src="js/functions.js" type="text/javascript"></script>
+<title>iOpenStreetMap</title>
+</head>
+
+<body onload="init('0')">
+
+	<div id="topbar">
+		<div id="rightbutton">
+			<a href="javascript:geoloc();"><img alt="Locate" src="images/Locate.png" /></a>
+		</div>
+		<div id="title">iOpenStreetMap</div>
+	</div>
+	
+	<div id="tributton">
+		<div class="links">
+			<a id="pressed" href="javascript:changeMapType('0');">Normale Karte</a><a id="fahrrad" href="javascript:changeMapType('1');">Fahrradkarte</a><a href="javascript:changeMapType('2');">Nachtkarte</a>
+		</div>
+	</div>
+	
+	<div class="searchbox">
+		<form action="javascript:search()" >
+			<fieldset><input id="search" placeholder="Suche" type="text" /><input id="submit" type="hidden" /></fieldset>
+		</form>
+	</div>
+	
+	<div id="content">
+			<!--<span class="graytitle">About iWebKit.</span>-->
+			<div id="searchresults" style="display:none;"></div>
+			
+			<div id="map" style="height:650px;margin-top:-99px"> </div>
+	</div>
+
+	<div id="footer">
+
+</body>
+
+</html>
