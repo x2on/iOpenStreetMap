@@ -6,8 +6,8 @@
 <meta content="index,follow" name="robots" />
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <link href="pics/homescreen.gif" rel="apple-touch-icon" />
-<meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
-<link href="css/style.css" rel="stylesheet" media="screen" type="text/css" />
+<meta content="minimum-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no" name="viewport" />
+<link href="css/developer-style.css" rel="stylesheet" media="screen" type="text/css" />
 <link href="css/lightbox.css" rel="stylesheet" media="screen" type="text/css" />
 <script type="text/javascript" src="js/khtml.js"> </script>
 <script type="text/javascript" src="js/ibox.js"></script>
@@ -153,33 +153,31 @@ function changeMapType(value) {
 
 <body onload="init('0')">
 
-	<div id="topbar">
+
+<div class="searchbox">
+		<form action="javascript:search()" >
+			<fieldset><input id="search" placeholder="Suche oder Adresse" type="text" /><input id="submit" type="hidden" /></fieldset>
+		</form></div>
+	
 		<div id="rightbutton">
 			<a href="javascript:geoloc();"><img alt="Locate" src="images/Locate.png" /></a>
 		</div>
-		<div id="title">iOpenStreetMap</div>
-	</div>
-	
+		
+
 	<div id="tributton">
 		<div class="links">
-			<a id="pressed" href="javascript:changeMapType('0');">Normale Karte</a><a id="fahrrad" href="javascript:changeMapType('1');">Fahrradkarte</a><a href="javascript:changeMapType('2');">Nachtkarte</a>
+			<a id="pressed" href="jvascript:changeMapType('0');">Klassisch</a><a id="fahrrad" href="javascript:changeMapType('1');">Fahrrad</a><a href="javascript:changeMapType('2');">Nacht</a>
 		</div>
 	</div>
-	
-	<div class="searchbox">
-		<form action="javascript:search()" >
-			<fieldset><input id="search" placeholder="Suche" type="text" /><input id="submit" type="hidden" /></fieldset>
-		</form>
-	</div>
+
 	
 	<div id="content">
-			<!--<span class="graytitle">About iWebKit.</span>-->
-			<div id="searchresults" style="display:none;"></div>
-			
-			<div id="map" style="height:650px;margin-top:-99px"> </div>
+			<div id="searchresults" style="display:none;"></div>	
+			<div id="map" style="height:800px;margin-top:-22px"> </div>
 	</div>
+	
 
-	<div id="footer">
+	<div id="footer"></div>
 
 </body>
 
