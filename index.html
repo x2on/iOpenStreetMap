@@ -21,21 +21,34 @@ function init(mapMode){
 	map.setCenter(center,9);
 }
 function geoloc(){
-	//	document.getElementById("geolocationajaxload").style.display="";
-	try{
-		var geo=navigator.geolocation;
-		if(!geo){
-			var geo = google.gears.factory.create('beta.geolocation');
-		}
-		geo.getCurrentPosition(callback,error);
-	}catch(e){
-		alert(e);
-	}
+	navigator.geolocation.getCurrentPosition(callback,geoerror);
 }
+
+function geoerror(error) {
+	alert("Unable to locate your position!");
+}
+
 function callback(position) {
 	var center=new kPoint(position.coords.latitude, position.coords.longitude);
 	map.setCenter(center,16);
+	setFlag(position);
 }
+
+function setFlag(position) {
+    var flagcenter1=new kPoint(position.coords.latitude, position.coords.longitude);
+    var img=document.createElement("img");
+    img.setAttribute("src","images/dot_green.png");
+    img.style.position="absolute";
+    img.style.top="-3px";
+    img.style.left="-4px";
+    img.style.width="18px";
+    img.style.height="18px";
+    img2=img.cloneNode(true);
+
+    var m=new kMarker(flagcenter1,img);
+    map.addOverlay(m);
+}
+
 function error(error){
 	alert(error);
 }
