@@ -51,8 +51,34 @@ function error(error){
 }
 function search(){
 	var target=document.getElementById("searchresults");
+	target.style.zIndex = "999";
+
 	while(target.firstChild){target.removeChild(target.firstChild)};
-	document.getElementById("searchresults").appendChild(document.createTextNode("searching..."));
+	
+	target.innerHTML = '<ul class="pageitem"><li class="textbox"><span class="header"><img src="images/loading.gif">searching...</span></li></ul>';
+	
+	/*
+	//Create innerHTML as standalone elements
+	var ul=document.createElement("ul");
+	ul.className="pageitem";
+	var liTop=document.createElement("li");
+	liTop.className="textbox";
+	ul.appendChild(liTop);
+	var spanTop=document.createElement("span");
+	spanTop.className="header";
+	liTop.appendChild(spanTop);
+	var imgLoading = document.createElement("img");
+	var attImgSrc = document.createAttribute("src");
+	attImgSrc.nodeValue = "images/loading.gif";
+	imgLoading.setAttributeNode(attImgSrc);
+	spanTop.appendChild(imgLoading);
+	var textTop=document.createTextNode("searching...");
+	spanTop.appendChild(textTop);
+	target.appendChild(ul);
+	*/
+	//Remove Focus from Search-Field to hide Keyboard
+	document.getElementById("search").blur();
+	
 	var xmlHttp=new XMLHttpRequest();
 	if (xmlHttp) {
 		var place=document.getElementById('search').value;
@@ -74,24 +100,33 @@ function render(dom){
 	while(target.firstChild){target.removeChild(target.firstChild)};
 	var names=dom.getElementsByTagName("place");
 	if(names.length==0){
+		target.innerHTML = '<ul class="pageitem"><li class="textbox"><span class="header">Leider kein passender Ort gefunden.<div id="bluerightbutton"><a href="javascript:closeSearchBox();">Close</a></div></span></li></ul>';
+		/*
 		var nameDiv=document.createElement("div");
 		textNode=document.createTextNode("Leider kein passender Ort gefunden");
 		nameDiv.appendChild(textNode);
 		target.appendChild(nameDiv);
-		alert('Kein Ort gefunden');
+		*/
+		
 		return;
 	}
 	if(names.length > 0) {
-	var ul=document.createElement("ul");
-	ul.className="pageitem";
-	var liTop=document.createElement("li");
-	liTop.className="textbox";
-	ul.appendChild(liTop);
-	var spanTop=document.createElement("span");
-	spanTop.className="header";
-	liTop.appendChild(spanTop);
-	var textTop=document.createTextNode("Suchergebnisse");
-	spanTop.appendChild(textTop);
+		var ul=document.createElement("ul");
+		ul.className="pageitem";
+		var liTop=document.createElement("li");
+		liTop.className="textbox";
+		ul.appendChild(liTop);
+		var spanTop=document.createElement("span");
+		spanTop.className="header";
+		liTop.appendChild(spanTop);
+		var textTop=document.createTextNode("Suchergebnisse");
+		spanTop.appendChild(textTop);
+		var closeDiv=document.createElement("div");
+		var attcloseDiv = document.createAttribute('id');
+	   	attcloseDiv.nodeValue = 'bluerightbutton';
+	   	closeDiv.setAttributeNode(attcloseDiv);
+		closeDiv.innerHTML='<a href="javascript:closeSearchBox();">Close</a>'
+		spanTop.appendChild(closeDiv);
 	}
 	for(var i=0; i < names.length;i++){
 		var name=names.item(i);
@@ -133,17 +168,11 @@ function render(dom){
 			countryNameDiv.className="itemcountry";
 		}
 	}
-	//Remove Focus from Search-Field to hide Keyboard
-	document.getElementById("search").blur();
 	return;		
-	var a=document.createElement("a");
-	var br=document.createElement("br");
-	var cc=document.createTextNode("cc by geonames");
-	a.appendChild(cc);
-	a.setAttribute("href","http://www.geonames.org");
-	return;
-	target.appendChild(br);
-	target.appendChild(a);
+}
+
+function closeSearchBox(){
+document.getElementById("searchresults").style.zIndex = "-1";
 }
 function executeSearch(value) {
 	eval(value);

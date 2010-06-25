@@ -975,12 +975,19 @@ li:last-child.store .image, .store:last-child a {
 	-webkit-border-bottom-right-radius: 6px;
 	float: left;
 }
-#rightnav, #rightbutton, #bluerightbutton {
+#rightnav, #rightbutton {
 	position: absolute;
 	font-size: 12px;
 	right: 290px;
 	font-weight: bold;
 	margin-top: 8px;
+}
+#bluerightbutton {
+	position: absolute;
+	font-size: 12px;
+	right: 12px;
+	font-weight: bold;
+	margin-top: 2px;
 }
 #rightnav a {
 	-webkit-border-image: url("../images/navlinkright.png") 0 13 0 5;
