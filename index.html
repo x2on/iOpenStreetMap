@@ -85,6 +85,14 @@ function render(dom){
 	if(names.length > 0) {
 	var ul=document.createElement("ul");
 	ul.className="pageitem";
+	var liTop=document.createElement("li");
+	liTop.className="textbox";
+	ul.appendChild(liTop);
+	var spanTop=document.createElement("span");
+	spanTop.className="header";
+	liTop.appendChild(spanTop);
+	var textTop=document.createTextNode("Suchergebnisse");
+	spanTop.appendChild(textTop);
 	}
 	for(var i=0; i < names.length;i++){
 		var name=names.item(i);
@@ -191,7 +199,8 @@ function changeMapType(value) {
 
 	
 	<div id="content">
-		<div id="searchresults" style="position:absolute;left:5px;top:50px;width:400px;height:80%;overflow:auto;border:0px solid black;font-size:12px"></div>	
+		<div id="searchresults" style="opacity: 0.8;position:absolute;left:5px;top:50px;width:400px;height:80%;overflow:auto;border:0px solid black;font-size:12px">
+		</div>	
 		<div id="map" style="height:800px;margin-top:-22px"> </div>
 	</div>
 	
