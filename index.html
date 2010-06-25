@@ -10,10 +10,8 @@
 <link href="css/developer-style.css" rel="stylesheet" media="screen" type="text/css" />
 <link href="css/lightbox.css" rel="stylesheet" media="screen" type="text/css" />
 <script type="text/javascript" src="js/khtml.js"> </script>
-<script type="text/javascript" src="js/ibox.js"></script>
 
 <script type="text/javascript">
-iBox.close_label = 'X';
 function init(mapMode){
 	map=new kmap(document.getElementById("map"));
 	map.setMapType('0');
@@ -56,7 +54,6 @@ function search(){
 	var target=document.getElementById("searchresults");
 	while(target.firstChild){target.removeChild(target.firstChild)};
 	document.getElementById("searchresults").appendChild(document.createTextNode("searching..."));
-
 	var xmlHttp=new XMLHttpRequest();
 	if (xmlHttp) {
 		var place=document.getElementById('search').value;
@@ -74,7 +71,6 @@ function search(){
 	}
 }
 function render(dom){
-	//alert('Test1');
 	var target=document.getElementById("searchresults");
 	while(target.firstChild){target.removeChild(target.firstChild)};
 	var names=dom.getElementsByTagName("place");
@@ -83,8 +79,12 @@ function render(dom){
 		textNode=document.createTextNode("Leider kein passender Ort gefunden");
 		nameDiv.appendChild(textNode);
 		target.appendChild(nameDiv);
-		iBox.show(document.getElementById("searchresults").innerHTML,'Kein Ort gefunden');
+		alert('Kein Ort gefunden');
 		return;
+	}
+	if(names.length > 0) {
+	var ul=document.createElement("ul");
+	ul.className="pageitem";
 	}
 	for(var i=0; i < names.length;i++){
 		var name=names.item(i);
@@ -97,31 +97,37 @@ function render(dom){
 			countryName="nix";
 			var lat=name.getAttribute("lat");
 			var lng=name.getAttribute("lon");
-			var div=document.createElement("div");
+			var span=document.createElement("span");
+			var spanarrow=document.createElement("span");
+			var li=document.createElement("li");
+			li.className="menu";
+			ul.appendChild(li);
 			var a=document.createElement("a");
-			a.appendChild(div);
-			div.style.fontSize="12px";
-			div.style.marginBottom="2px";
-			//var a=document.createElement("a");
+			li.appendChild(a);
+			
+			a.appendChild(span);
+			a.appendChild(spanarrow);
+			span.style.fontSize="12px";
+			span.style.marginBottom="2px";
 			var nameDiv=document.createElement("div");
 			var countryNameDiv=document.createElement("div");
 			var nameTextNode=document.createTextNode(nameText);
 			var countryNameTextNode=document.createTextNode(" in "+countryName);
 			nameDiv.appendChild(nameTextNode);
 			countryNameDiv.appendChild(countryNameTextNode);
-			div.appendChild(nameDiv);
+			span.appendChild(nameDiv);
 			var zoom=14;
 			var value="map.setCenter(new kPoint("+lat+","+lng+"),"+zoom+");";
 			a.setAttribute("href","javascript:executeSearch('"+value+"')");
-			target.appendChild(a);
-			div.className="item";
+			target.appendChild(ul);
+			span.className="name";
+			spanarrow.className="arrow";
 			nameDiv.className="itemname";
 			countryNameDiv.className="itemcountry";
 		}
 	}
 	//Remove Focus from Search-Field to hide Keyboard
 	document.getElementById("search").blur();
-	iBox.show(document.getElementById("searchresults").innerHTML,'Bitte wählen Sie einen Ort aus.');
 	return;		
 	var a=document.createElement("a");
 	var br=document.createElement("br");
@@ -185,8 +191,8 @@ function changeMapType(value) {
 
 	
 	<div id="content">
-			<div id="searchresults" style="display:none;"></div>	
-			<div id="map" style="height:800px;margin-top:-22px"> </div>
+		<div id="searchresults" style="position:absolute;left:5px;top:50px;width:400px;height:80%;overflow:auto;border:0px solid black;font-size:12px"></div>	
+		<div id="map" style="height:800px;margin-top:-22px"> </div>
 	</div>
 	
 
