@@ -4,11 +4,9 @@ body {
 	margin: 0;
 	-webkit-text-size-adjust: none;
 	min-height: 416px;
-	max-width: 1024px;
 	font-family: helvetica,sans-serif;
-	-webkit-background-size:0.438em 100%; 
-	background: -webkit-gradient(linear,left top,right top,from(#c5ccd4), color-stop(71%, #c5ccd4), color-stop(72%, #cbd2d8), to(#cbd2d8));
 	-webkit-touch-callout: none;
+	background-color: #CCCCCC;
 }
 
 #searchresults {
@@ -231,7 +229,7 @@ a:hover .arrow {
 #footer {
 	text-align: center;
 	position: relative;
-	margin: 20px 10px 0;
+	margin: 12px 10px 0;
 	height: auto;
 	width: auto;
 	bottom: 10px;

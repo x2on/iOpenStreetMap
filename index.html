@@ -11,7 +11,20 @@
 <script type="text/javascript" src="js/khtml.js"> </script>
 
 <script type="text/javascript">
+window.onresize = changeSize;
+function changeSize() {
+	var  height =  window.innerHeight ||  (window.document.documentElement.clientHeight || window.document.body.clientHeight);
+	var  width =  window.innerWidth ||  (window.document.documentElement.clientWidth || window.document.body.clientWidth);
+	height = height - 40;
+	height += "px";
+	width += "px";
+	var target=document.getElementById("map");
+	target.style.height = height;
+	target.style.width = width;
+}
 function init(mapMode){
+	changeSize();
+
 	map=new kmap(document.getElementById("map"));
 	map.setMapType('0');
 	var center=new kPoint(48.2,15.633);
@@ -56,26 +69,7 @@ function search(){
 	while(target.firstChild){target.removeChild(target.firstChild)};
 	
 	target.innerHTML = '<ul class="pageitem"><li class="textbox"><span class="header"><img src="images/loading.gif">searching...</span></li></ul>';
-	
-	/*
-	//Create innerHTML as standalone elements
-	var ul=document.createElement("ul");
-	ul.className="pageitem";
-	var liTop=document.createElement("li");
-	liTop.className="textbox";
-	ul.appendChild(liTop);
-	var spanTop=document.createElement("span");
-	spanTop.className="header";
-	liTop.appendChild(spanTop);
-	var imgLoading = document.createElement("img");
-	var attImgSrc = document.createAttribute("src");
-	attImgSrc.nodeValue = "images/loading.gif";
-	imgLoading.setAttributeNode(attImgSrc);
-	spanTop.appendChild(imgLoading);
-	var textTop=document.createTextNode("searching...");
-	spanTop.appendChild(textTop);
-	target.appendChild(ul);
-	*/
+
 	//Remove Focus from Search-Field to hide Keyboard
 	document.getElementById("search").blur();
 	
@@ -101,13 +95,6 @@ function render(dom){
 	var names=dom.getElementsByTagName("place");
 	if(names.length==0){
 		target.innerHTML = '<ul class="pageitem"><li class="textbox"><span class="header">Leider kein passender Ort gefunden.<div id="bluerightbutton"><a href="javascript:closeSearchBox();">Close</a></div></span></li></ul>';
-		/*
-		var nameDiv=document.createElement("div");
-		textNode=document.createTextNode("Leider kein passender Ort gefunden");
-		nameDiv.appendChild(textNode);
-		target.appendChild(nameDiv);
-		*/
-		
 		return;
 	}
 	if(names.length > 0) {
@@ -172,7 +159,9 @@ function render(dom){
 }
 
 function closeSearchBox(){
-document.getElementById("searchresults").style.zIndex = "-1";
+	var target = document.getElementById("searchresults");
+	target.style.zIndex = "-1";
+	target.innerHTML = '';
 }
 function executeSearch(value) {
 	eval(value);
@@ -229,11 +218,11 @@ function changeMapType(value) {
 	<div id="content">
 		<div id="searchresults" style="opacity: 0.8;position:absolute;left:5px;top:50px;width:400px;height:80%;overflow:auto;border:0px solid black;font-size:12px">
 		</div>	
-		<div id="map" style="height:800px;margin-top:-22px"> </div>
+		<div id="map" style="margin-top:-22px"> </div>
 	</div>
 	
 
-	<div id="footer"></div>
+	<div id="footer">Kartendaten von OpenStreetMap (und) Mitwirkende, CC-BY-SA</div>
 
 </body>
 
