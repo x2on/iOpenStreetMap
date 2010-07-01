@@ -4,6 +4,7 @@ body {
 	margin: 0;
 	-webkit-text-size-adjust: none;
 	min-height: 416px;
+	min-width: 768px;
 	font-family: helvetica,sans-serif;
 	-webkit-touch-callout: none;
 	background-color: #CCCCCC;
@@ -150,7 +151,7 @@ a:hover .arrow {
 	width: 144px;
 }
 #tributton .links {
-	width: 422px;
+/*	width: 422px;*/
 }
 #doublead {
 	width: 350px!important;
@@ -282,7 +283,18 @@ a:hover .arrow {
 	-webkit-border-bottom-left-radius: 5px;
 	margin-left: -4px;
 }
-#tributton a, #duobutton a {
+#duobutton a:last-child {
+	border: 0;
+}
+#tributton a:last-child {
+	border-left: 1px solid #6d7e91;
+}
+#tributton a:last-child, #duobutton a:last-child {
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	margin-right: -4px;
+}
+#tributton a, #tributton a.unpressed, #duobutton a {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
@@ -295,22 +307,13 @@ a:hover .arrow {
 	color: #3f5c84;
 	text-shadow: #FFF 0 1px 0;
 }
-#duobutton a:last-child {
-	border: 0;
-}
-#tributton a:last-child {
-	border-left: 1px solid #6d7e91;
-}
-#tributton a:last-child, #duobutton a:last-child {
-	-webkit-border-top-right-radius: 5px;
-	-webkit-border-bottom-right-radius: 5px;
-	margin-right: -4px;
-}
-#tributton a:hover, #tributton a#pressed, #duobutton a:hover, #duobutton a#pressed {
+
+#tributton a:hover, #tributton a.pressed, #duobutton a:hover, #duobutton a.pressed {
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#7b8b9f), color-stop(3%, #8c9baf), to(#647792));
 	color: white;
 	text-shadow: black 0 -1px 0;
 }
+
 #triselectionbuttons, #duoselectionbuttons {
 	-webkit-border-image: url('../images/navbutton.png') 0 5 0 5;
 	border-width: 0 5px 0 5px;
